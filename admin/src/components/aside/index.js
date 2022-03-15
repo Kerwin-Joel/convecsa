@@ -24,7 +24,7 @@ export const Aside = () => {
           </li>
           <li>
             <Node width={20}/>
-            <a href="google.com">Section 3</a>
+            <Link to="/login">Login</Link>
           </li>
           <li>
             <Node width={20}/>

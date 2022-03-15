@@ -8,15 +8,15 @@ import {
 } from "react-router-dom";
 function App() {
   return (
-    
     <div className='container'>
       <Aside/>
       <Routes>
         <Route path="/" element={<SectionOne />} />
-        <Route path="sectionTwo" element={<SectionTwo />} />
-      </Routes>
+        <Route path="/sectionTwo" element={<SectionTwo />} />
+      </Routes> 
     </div>
   );
 }
+// juan 123456
 
 export default App;
