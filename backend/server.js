@@ -1,47 +1,26 @@
-const dotenv = require('dotenv');
-const app = require('./app');
-const mongoose = require('mongoose')
-const port = 3000; //definimos el puerto en una variable
+import express from 'express';
+import morgan from 'morgan';
+import cors from 'cors';
+import './database.js';
+
+import authentication from './routes/login.routes.js';
+
+const app = express();
+
+// Settings
+app.set('port', process.env.PORT || 4000);
+const port = app.get('port');
+
+// Middlewares
+app.use(cors())
+app.use(morgan('dev'));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 
+// Routes
+app.use('/api', authentication);
 
-process.on('uncaughtException',err=>{
-    console.log('UNCAUGHT EXCEPTION shutting down...');
-    console.log(err.name,err.message);
-    process.exit(0);
-})
-
-
-//generate conenction to DB
-const DB = process.env.DATABASE.replace('<PASSWORD>',process.env.DATABASE_PASSWORD)
-
-mongoose.connect(
-    DB,{
-        useNewUrlParser:true,
-        useCreateIndex:true,
-        useFindAndModify:false,
-        useUnifiedTopology: true
-    })
-    .then(() => console.log('Conection successful'))
-
-//PUERTO EN EL QUE EL SERVIDOR ESCUCHARÁ
-// const server = app.listen(process.env.PORT || port,()=>{
-const server = app.listen(3800 || port,()=>{
-    console.log(`app listening on port ${port}`)
-})
-
-process.on('unhandledRejection',err =>{
-    console.log('UNHANDLED REJECTED shutting down...');
-    console.log(err.name,err.message);
-    server.close(()=>{
-        process.exit(1);
-    })
-})
-
-
-process.on('SIGTERM',()=>{
-    console.log('🤚🏻 SIGTERM RECEIVED shutting down...');
-    server.close(()=>{
-        console.log('💥 Process terminated');
-    })
-})
+app.listen(port, () => {
+	console.log('Server on port', port);
+});
